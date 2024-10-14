@@ -80,6 +80,7 @@ void matrix_scan_user(void) {
 	}
 }
 
+
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 //	if (host_keyboard_led_state().caps_lock) {
 //		for (uint8_t i = led_min; i < led_max; i++) {
@@ -91,7 +92,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 	if (is_mouse_jiggle_active) {
 		rgb_matrix_set_color(2, RGB_RED);
 	} else {
-		rgb_matrix_set_color(2, RGB_BLACK);
+		rgb_matrix_set_color(2, RGB_GREEN);
 	}
     return false;
 }
+

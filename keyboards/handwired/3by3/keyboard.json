@@ -18,8 +18,11 @@
         "nkro": true
     },
     "matrix_pins": {
-      "cols": ["D1", "D0", "D4"],
-      "rows": ["E6", "B4", "B5"]
+		"direct": [
+			["D1", "D0", "D4"],
+			["C6", "D7", "E6"],
+			["B4", "B5", "B6"]
+		]
     },
     "diode_direction": "COL2ROW",
     "processor": "atmega32u4",
