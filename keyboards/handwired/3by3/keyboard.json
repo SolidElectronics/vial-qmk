@@ -4,9 +4,9 @@
     "url": "https://github.com/SolidElectronics/vial-qmk",
     "maintainer": "SolidElectronics",
     "usb": {
-      "vid": "0xD143",
-      "pid": "0x0007",
-      "device_version": "0.0.1"
+      "vid": "0xFEED",
+      "pid": "0x2048",
+      "device_version": "0.1.0"
     },
     "features": {
         "bootmagic": true,

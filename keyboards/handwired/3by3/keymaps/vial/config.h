@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 #pragma once
 #define VIAL_KEYBOARD_UID {0x38, 0xAA, 0x38, 0x33, 0xE6, 0xDF, 0x5A, 0x60}
-#define DYNAMIC_KEYMAP_LAYER_COUNT 1
+#define DYNAMIC_KEYMAP_LAYER_COUNT 2
 #define DYNAMIC_KEYMAP_MACRO_COUNT 12
 #define TAP_CODE_DELAY 30
 #define MOUSEKEY_MOVE_DELTA 2
