@@ -52,7 +52,7 @@ led_config_t g_led_config = { {
 	4, 4, 8, 4, 4, 4, 4, 4, 4
 } };
 
-bool is_mouse_jiggle_active = false;
+bool is_mouse_jiggle_active = true;			// Default to on when started up
 bool mouse_jiggle_direction = false;		// used to alternate direction
 uint16_t mouse_jiggle_frequency = 60000;	// how often to move the mouse (ms)
 uint16_t mouse_jiggle_timer = 0;
@@ -62,12 +62,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		case M_JIGL:
 			if (record->event.pressed) {
 				is_mouse_jiggle_active = !is_mouse_jiggle_active;
-				// Confirm it's doing something - this could come out.
-				if (is_mouse_jiggle_active) {
-					tap_code16(KC_1);
-				} else {
-					tap_code16(KC_0);
-				}
+//				if (is_mouse_jiggle_active) {
+//					tap_code16(KC_1);
+//				} else {
+//					tap_code16(KC_0);
+//				}
 			}
 		break;
 	}
@@ -91,20 +90,26 @@ void matrix_scan_user(void) {
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-	// Loop through all keys to see if any need their LEDs set
 	uint8_t current_layer = get_highest_layer(layer_state);
 	uint8_t current_brightness = rgb_matrix_get_val();
+	// Loop through all keys to see if any need their LEDs set
 	for (uint8_t row = 0; row < MATRIX_ROWS; ++row) {
 		for (uint8_t col = 0; col < MATRIX_COLS; ++col) {
 			uint8_t index = g_led_config.matrix_co[row][col];
-			// Mouse jiggle key light indicates status (specific color if on)
+			// Mouse jiggle key light indicates status 
+			// Put this on a temporary layer or modifier so it doesn't show all the time.
 			if (index >= led_min && index < led_max && index != NO_LED &&
                 keymap_key_to_keycode(current_layer, (keypos_t){col,row}) == QK_KB_0) {
 				if (is_mouse_jiggle_active) {
-					// Apply global brightness to indicator color
 					rgb_matrix_set_color(index,
 						(uint8_t) 0x20 * current_brightness / 0xFF,	// R
 						(uint8_t) 0x80 * current_brightness / 0xFF,	// G
+						(uint8_t) 0x20 * current_brightness	/ 0xFF	// B
+					);
+				} else {
+					rgb_matrix_set_color(index,
+						(uint8_t) 0x80 * current_brightness / 0xFF,	// R
+						(uint8_t) 0x20 * current_brightness / 0xFF,	// G
 						(uint8_t) 0x20 * current_brightness	/ 0xFF	// B
 					);
 				}

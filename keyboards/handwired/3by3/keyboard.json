@@ -15,7 +15,7 @@
         "dip_switch": false,
         "extrakey": true,
         "mousekey": true,
-        "nkro": true
+        "nkro": false
     },
     "matrix_pins": {
 		"direct": [
