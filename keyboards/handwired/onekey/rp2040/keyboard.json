@@ -4,7 +4,7 @@
     "bootloader": "rp2040",
     "matrix_pins": {
         "cols": ["GP4"],
-        "rows": ["GP5"]
+        "rows": ["GP6"]
     },
     "backlight": {
         "pin": "GP25"
