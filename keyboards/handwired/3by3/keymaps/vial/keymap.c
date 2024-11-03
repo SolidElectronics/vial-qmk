@@ -3,7 +3,9 @@
 
 enum layers{
 	_MAIN,
-	_ALT
+	_MACRO1,
+	_MACRO2,
+	_CFG
 };
 
 enum jiggle_keycode {
@@ -11,17 +13,29 @@ enum jiggle_keycode {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-	// Layer 0
-	// Function key: Tap to toggle mouse jiggle, hold to temporarily switch layer
+	// Layer 0: Media and layer select
 	[_MAIN] = LAYOUT(
-		MO(_ALT), QK_MACRO_0, QK_MACRO_1,
-		QK_MACRO_2, QK_MACRO_3, QK_MACRO_4,
-		QK_MACRO_5, QK_MACRO_6, QK_MACRO_7
+		KC_MPRV, KC_MPLY, KC_MNXT,
+		KC_MRWD, KC_MSTP, KC_MFFD,
+		MO(_CFG), MO(_MACRO2), MO(_MACRO1)
 	),
-	[_ALT] = LAYOUT(
-		KC_TRNS, RGB_VAI, RGB_VAD,
-		M_JIGL, RGB_MOD, RGB_RMOD,
-		KC_TRNS, KC_TRNS, KC_TRNS
+	// Layer 1: Macro set 1
+	[_MACRO1] = LAYOUT(
+		QK_MACRO_0, QK_MACRO_1, QK_MACRO_2,
+		QK_MACRO_3, QK_MACRO_4, QK_MACRO_5,
+		QK_MACRO_6, QK_MACRO_7, KC_TRNS
+	),
+	// Layer 2: Macro set 2
+	[_MACRO2] = LAYOUT(
+		QK_MACRO_8, QK_MACRO_9, QK_MACRO_10,
+		QK_MACRO_11, QK_MACRO_12, QK_MACRO_13,
+		QK_MACRO_14, KC_TRNS, QK_MACRO_16
+	),
+	// Layer 3: Pad config
+	[_CFG] = LAYOUT(
+		M_JIGL, RGB_VAI, RGB_VAD,
+		QK_BOOTLOADER, RGB_MOD, RGB_RMOD,
+		KC_TRNS, KC_SYSTEM_WAKE, RGB_TOG
 	)
 };
 
@@ -50,11 +64,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		case M_JIGL:
 			if (record->event.pressed) {
 				is_mouse_jiggle_active = !is_mouse_jiggle_active;
-//				if (is_mouse_jiggle_active) {
-//					tap_code16(KC_1);
-//				} else {
-//					tap_code16(KC_0);
-//				}
 			}
 		break;
 	}
@@ -87,7 +96,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 			// Mouse jiggle key light indicates status 
 			// Put this on a temporary layer or modifier so it doesn't show all the time.
 			if (index >= led_min && index < led_max && index != NO_LED &&
-                keymap_key_to_keycode(current_layer, (keypos_t){col,row}) == QK_KB_0) {
+			keymap_key_to_keycode(current_layer, (keypos_t){col,row}) == QK_KB_0) {
 				if (is_mouse_jiggle_active) {
 					rgb_matrix_set_color(index,
 						(uint8_t) 0x20 * current_brightness / 0xFF,	// R
@@ -101,6 +110,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 						(uint8_t) 0x20 * current_brightness	/ 0xFF	// B
 					);
 				}
+			}
+			// Bootloader button shows black
+			// Put this on a temporary layer or modifier so it doesn't show all the time.
+			if (index >= led_min && index < led_max && index != NO_LED &&
+			keymap_key_to_keycode(current_layer, (keypos_t){col,row}) == QK_BOOTLOADER) {
+				rgb_matrix_set_color(index, 0,0,0);
 			}
 		}
 	}
